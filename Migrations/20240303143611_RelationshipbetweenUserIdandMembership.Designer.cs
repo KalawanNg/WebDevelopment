@@ -4,6 +4,7 @@ using IdentityPractice.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IdentityPractice.Migrations
 {
     [DbContext(typeof(GymContext))]
-    partial class GymContextModelSnapshot : ModelSnapshot
+    [Migration("20240303143611_RelationshipbetweenUserIdandMembership")]
+    partial class RelationshipbetweenUserIdandMembership
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,27 +24,6 @@ namespace IdentityPractice.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("IdentityPractice.Models.Building", b =>
-                {
-                    b.Property<int>("BuildingId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BuildingId"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TeleNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("BuildingId");
-
-                    b.ToTable("Buildings");
-                });
 
             modelBuilder.Entity("IdentityPractice.Models.Course", b =>
                 {
@@ -74,16 +56,11 @@ namespace IdentityPractice.Migrations
                     b.Property<int>("MembershipId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StaffId")
-                        .HasColumnType("int");
-
                     b.HasKey("EnrollmentId");
 
                     b.HasIndex("CourseId");
 
                     b.HasIndex("MembershipId");
-
-                    b.HasIndex("StaffId");
 
                     b.ToTable("Enrollments");
                 });
@@ -110,27 +87,6 @@ namespace IdentityPractice.Migrations
                         .IsUnique();
 
                     b.ToTable("Memberships");
-                });
-
-            modelBuilder.Entity("IdentityPractice.Models.Staff", b =>
-                {
-                    b.Property<int>("StaffId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StaffId"));
-
-                    b.Property<string>("EmailAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("StaffId");
-
-                    b.ToTable("Staffs");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -345,10 +301,6 @@ namespace IdentityPractice.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("IdentityPractice.Models.Staff", null)
-                        .WithMany("Enrollments")
-                        .HasForeignKey("StaffId");
-
                     b.Navigation("Course");
 
                     b.Navigation("Membership");
@@ -422,11 +374,6 @@ namespace IdentityPractice.Migrations
                 });
 
             modelBuilder.Entity("IdentityPractice.Models.Membership", b =>
-                {
-                    b.Navigation("Enrollments");
-                });
-
-            modelBuilder.Entity("IdentityPractice.Models.Staff", b =>
                 {
                     b.Navigation("Enrollments");
                 });
