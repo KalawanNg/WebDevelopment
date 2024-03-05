@@ -12,48 +12,49 @@ namespace IdentityPractice.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
-    public class MembershipsController : ControllerBase
+    [Authorize(Roles = "Admin")]
+
+    public class StaffsController : ControllerBase
     {
         private readonly GymContext _context;
 
-        public MembershipsController(GymContext context)
+        public StaffsController(GymContext context)
         {
             _context = context;
         }
 
-        // GET: api/Courses
+        // GET: api/Staffs
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Membership>>> GetMembership()
+        public async Task<ActionResult<IEnumerable<Staff>>> GetStaffs()
         {
-            return await _context.Memberships.ToListAsync();
+            return await _context.Staffs.ToListAsync();
         }
 
-        // GET: api/Courses/5
+        // GET: api/Staffs/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Membership>> GetMembership(int id)
+        public async Task<ActionResult<Staff>> GetStaff(int id)
         {
-            var Membership = await _context.Memberships.FindAsync(id);
+            var staff = await _context.Staffs.FindAsync(id);
 
-            if (Membership == null)
+            if (staff == null)
             {
                 return NotFound();
             }
 
-            return Membership;
+            return staff;
         }
 
-        // PUT: api/Courses/5
+        // PUT: api/Staffs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMembership(int id, Membership membership)
+        public async Task<IActionResult> PutStaff(int id, Staff staff)
         {
-            if (id != membership.MembershipId)
+            if (id != staff.StaffId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(membership).State = EntityState.Modified;
+            _context.Entry(staff).State = EntityState.Modified;
 
             try
             {
@@ -61,7 +62,7 @@ namespace IdentityPractice.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MembershipExists(id))
+                if (!StaffExists(id))
                 {
                     return NotFound();
                 }
@@ -74,36 +75,36 @@ namespace IdentityPractice.Controllers
             return NoContent();
         }
 
-        // POST: api/Courses
+        // POST: api/Staffs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Membership>> PostMembership(Membership membership)
+        public async Task<ActionResult<Staff>> PostStaff(Staff staff)
         {
-            _context.Memberships.Add(membership);
+            _context.Staffs.Add(staff);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMembership", new { id = membership.MembershipId }, membership);
+            return CreatedAtAction("GetStaff", new { id = staff.StaffId }, staff);
         }
 
-        // DELETE: api/Courses/5
+        // DELETE: api/Staffs/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMembership(int id)
+        public async Task<IActionResult> DeleteStaff(int id)
         {
-            var membership= await _context.Memberships.FindAsync(id);
-            if (membership == null)
+            var staff = await _context.Staffs.FindAsync(id);
+            if (staff == null)
             {
                 return NotFound();
             }
 
-            _context.Memberships.Remove(membership);
+            _context.Staffs.Remove(staff);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool MembershipExists(int id)
+        private bool StaffExists(int id)
         {
-            return _context.Memberships.Any(e => e.MembershipId == id);
+            return _context.Staffs.Any(e => e.StaffId == id);
         }
     }
 }

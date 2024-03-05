@@ -12,48 +12,49 @@ namespace IdentityPractice.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
-    public class MembershipsController : ControllerBase
+    [Authorize(Roles = "Admin")]
+
+    public class BuildingsController : ControllerBase
     {
         private readonly GymContext _context;
 
-        public MembershipsController(GymContext context)
+        public BuildingsController(GymContext context)
         {
             _context = context;
         }
 
-        // GET: api/Courses
+        // GET: api/Buildings
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Membership>>> GetMembership()
+        public async Task<ActionResult<IEnumerable<Building>>> GetBuildings()
         {
-            return await _context.Memberships.ToListAsync();
+            return await _context.Buildings.ToListAsync();
         }
 
-        // GET: api/Courses/5
+        // GET: api/Buildings/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Membership>> GetMembership(int id)
+        public async Task<ActionResult<Building>> GetBuilding(int id)
         {
-            var Membership = await _context.Memberships.FindAsync(id);
+            var building = await _context.Buildings.FindAsync(id);
 
-            if (Membership == null)
+            if (building == null)
             {
                 return NotFound();
             }
 
-            return Membership;
+            return building;
         }
 
-        // PUT: api/Courses/5
+        // PUT: api/Buildings/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMembership(int id, Membership membership)
+        public async Task<IActionResult> PutBuilding(int id, Building building)
         {
-            if (id != membership.MembershipId)
+            if (id != building.BuildingId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(membership).State = EntityState.Modified;
+            _context.Entry(building).State = EntityState.Modified;
 
             try
             {
@@ -61,7 +62,7 @@ namespace IdentityPractice.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MembershipExists(id))
+                if (!BuildingExists(id))
                 {
                     return NotFound();
                 }
@@ -74,36 +75,36 @@ namespace IdentityPractice.Controllers
             return NoContent();
         }
 
-        // POST: api/Courses
+        // POST: api/Buildings
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Membership>> PostMembership(Membership membership)
+        public async Task<ActionResult<Building>> PostBuilding(Building building)
         {
-            _context.Memberships.Add(membership);
+            _context.Buildings.Add(building);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMembership", new { id = membership.MembershipId }, membership);
+            return CreatedAtAction("GetBuilding", new { id = building.BuildingId }, building);
         }
 
-        // DELETE: api/Courses/5
+        // DELETE: api/Buildings/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMembership(int id)
+        public async Task<IActionResult> DeleteBuilding(int id)
         {
-            var membership= await _context.Memberships.FindAsync(id);
-            if (membership == null)
+            var building = await _context.Buildings.FindAsync(id);
+            if (building == null)
             {
                 return NotFound();
             }
 
-            _context.Memberships.Remove(membership);
+            _context.Buildings.Remove(building);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool MembershipExists(int id)
+        private bool BuildingExists(int id)
         {
-            return _context.Memberships.Any(e => e.MembershipId == id);
+            return _context.Buildings.Any(e => e.BuildingId == id);
         }
     }
 }
