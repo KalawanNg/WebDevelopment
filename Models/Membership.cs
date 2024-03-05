@@ -12,6 +12,7 @@ namespace IdentityPractice.Models
         public int MembershipId { get; set; }
         public string Name { get; set; }
         public string IdentityUserId {get; set;}
+        [JsonIgnore]
         public IdentityUser IdentityUser { get; set; }
         [JsonIgnore]
         public List<Enrollment>? Enrollments { get; set; }
