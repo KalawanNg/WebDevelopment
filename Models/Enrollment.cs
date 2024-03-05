@@ -9,7 +9,7 @@ namespace IdentityPractice.Models
     public class Enrollment
     {
         public int EnrollmentId { get; set; }
-        public int MembershipId { get; set; }
+        public string IdentityUserId {get; set;}
         public int CourseId { get; set; }
 
         [JsonIgnore]
